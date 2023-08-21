@@ -10,6 +10,8 @@ public class PagamentoDTO {
 
     private Long id;
 
+    @NotNull(message = "Campo requerido")
+    @Positive(message = "O valor deve ser positivo")
     private BigDecimal valor;
 
     private String nome; //nome
@@ -22,12 +24,16 @@ public class PagamentoDTO {
 
     private Status status;
 
+    @NotNull(message = "Campo requerido")
+    @Positive
     private Long pedidoId;
 
     public Long getId() {
         return id;
     }
 
+    @NotNull(message = "Campo requerido")
+    @Positive
     private Long formaDePagamentoId; // 1 - cartao 2 - dinheiro
 
     public PagamentoDTO() {

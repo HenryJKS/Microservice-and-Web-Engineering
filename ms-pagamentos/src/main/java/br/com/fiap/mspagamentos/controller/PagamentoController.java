@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.persistence.PostUpdate;
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 
@@ -42,12 +44,21 @@ public class PagamentoController {
         return ResponseEntity.created(uri).body(dto);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<PagamentoDTO> update(@PathVariable @Valid @Positive Long id,
+                                               @Valid @RequestBody PagamentoDTO pagamentoDTO) {
+        pagamentoDTO = pagamentoService.update(id, pagamentoDTO);
+        return ResponseEntity.ok(pagamentoDTO);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         pagamentoService.delete(id);
 
         return ResponseEntity.noContent().build();
     }
+
+
 
 
 }

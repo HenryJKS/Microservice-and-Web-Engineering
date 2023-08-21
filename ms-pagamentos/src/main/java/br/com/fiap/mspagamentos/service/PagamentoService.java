@@ -4,10 +4,14 @@ import br.com.fiap.mspagamentos.dto.PagamentoDTO;
 import br.com.fiap.mspagamentos.model.Pagamento;
 import br.com.fiap.mspagamentos.model.Status;
 import br.com.fiap.mspagamentos.repository.PagamentoRepository;
+import br.com.fiap.mspagamentos.service.exception.ResourceNotFoundException;
+import org.hibernate.action.internal.EntityActionVetoException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,8 +33,7 @@ public class PagamentoService {
     @Transactional(readOnly = true)
     public PagamentoDTO findById(long id) {
         // Pode ou não encontrar registro
-        Optional<Pagamento> result = repository.findById(id);
-        Pagamento pagamento = result.get();
+        Pagamento pagamento = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pagamento não encontrado ID: " + id));
         // converter pagamento para dto
         PagamentoDTO dto = new PagamentoDTO(pagamento);
         return dto;
@@ -58,8 +61,26 @@ public class PagamentoService {
     }
 
     @Transactional
+    public PagamentoDTO update(Long id, PagamentoDTO dto) {
+        try {
+            Pagamento pagamento = repository.getReferenceById(id);
+            // chamando metodo de conversao de dto para entity
+            copyDtoToPagamento(dto, pagamento);
+            pagamento = repository.save(pagamento);
+            return new PagamentoDTO(pagamento);
+        } catch(EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Não encontrado o ID: " + id);
+
+        }
+    }
+
+    @Transactional
     public void delete(Long id) {
+        try {
         repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Não encontrado o ID: " + id);
+        }
     }
 
 }

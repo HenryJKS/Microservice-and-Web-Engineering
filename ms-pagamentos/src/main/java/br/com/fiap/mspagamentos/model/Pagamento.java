@@ -26,8 +26,10 @@ public class Pagamento {
     private Status status;
 
     @NotNull(message = "Campo requerido")
+    @Positive
     private Long pedidoId;
     @NotNull(message = "Campo requerido")
+    @Positive
     private Long formaDePagamentoId; // 1 - cartao 2 - dinheiro
 
     public Pagamento() {
