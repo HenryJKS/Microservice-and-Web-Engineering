@@ -36,8 +36,8 @@ public class Pagamento {
     }
 
     // esse metodo serve para receber os dados do front e enviar para o backend
-    public Pagamento(BigDecimal valor, String nome, String numeroDoCartao, String validade, String codigo, Status status, Long pedidoId, Long formaDePagamentoId) {
-        super();
+    public Pagamento(Long id, BigDecimal valor, String nome, String numeroDoCartao, String validade, String codigo, Status status, Long pedidoId, Long formaDePagamentoId) {
+        this.id = id;
         this.valor = valor;
         this.nome = nome;
         this.numeroDoCartao = numeroDoCartao;

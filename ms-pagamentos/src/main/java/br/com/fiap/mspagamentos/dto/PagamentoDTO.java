@@ -53,7 +53,8 @@ public class PagamentoDTO {
     }
 
     // o PagamentoDTO serve para receber os dados do front e enviar para o backend
-    public PagamentoDTO(BigDecimal valor, String nome, String numeroDoCartao, String validade, String codigo, Status status, Long pedidoId, Long formaDePagamentoId) {
+    public PagamentoDTO(Long id, BigDecimal valor, String nome, String numeroDoCartao, String validade, String codigo, Status status, Long pedidoId, Long formaDePagamentoId) {
+        this.id = id;
         this.valor = valor;
         this.nome = nome;
         this.numeroDoCartao = numeroDoCartao;
